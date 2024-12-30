@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sensor Data Overlay</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            display: grid;
+            grid-template-rows: auto 1fr;
+            height: 100vh;
+        }
+        .title {
+            display: flex;
+            justify-content: center;
+            padding: 10px;
+            background-color: #f0f0f0;
+        }
+        .main-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: auto 1fr;
+            gap: 10px;
+            padding: 10px;
+        }
+        .floor {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .background-image {
+            width: 100%;
+            height: auto;
+        }
+        .room {
+            position: absolute;
+            cursor: pointer;
+            fill: transparent;
+            stroke: black;
+            stroke-width: 1px;
+        }
+        .room.green {
+            fill: green;
+            fill-opacity: 0.5;
+        }
+        .room.red {
+            fill: red;
+            fill-opacity: 0.5;
+        }
+        .room.white {
+            fill: white;
+        }
+        text {
+            font-size: 12px;
+            font-weight: bold;
+            fill: rgb(10, 3, 3);
+            pointer-events: none;
+        }
+        .table-container {
+            grid-column: span 3;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+        }
+        .table-section {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        table {
+            width: 30%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 10px; /* Уменьшаем шрифт */
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 2px; /* Уменьшаем отступы */
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .red-row {
+            background-color: rgba(255, 0, 0, 0.2);
+        }
+        .green-row {
+            background-color: rgba(0, 255, 0, 0.2);
+        }
+        .white {
+            fill: white; /* Для SVG-комнат */
+        }
+
+        .white-row {
+            background-color: white; /* Для строк таблицы */
+        }
+
+    </style>
+</head>
+<body>
+    <div class="title">
+        <h2>Мониторинг температуры и влажности - школа НИШ Кокшетау</h2>
+    </div>
+    <div class="main-container">
+        <!-- Floor with room 100 -->
+        <div class="floor">
+            <img src="img/kt1.png" class="background-image" alt="Floor with room 100">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 762.5 402" style="position:absolute; top:0; left:0; width:100%; height:100%;">
+                <path id="room-106" class="room green" d="m 273.80652,346.72738 0.0707,39.64012 h -54.69064 v -39.64012 z" />
+                <path id="room-107" class="room green" d="m 185.81607,346.72738 0.05,39.64012 h 32.12684 v -39.64012 z" />
+                <path id="room-108" class="room green" d="m 184.6669,346.72738 0.05,39.64012 h -53.51143 l 0.05,-39.64012 z" />
+                <path id="room-109" class="room green" d="m 130.25611,346.72738 -0.19985,39.64012 H 89.535464 l 0.09993,-39.64012 z" />
+                <path id="room-110" class="room green" d="m 88.636113,346.72738 -0.09993,39.64012 H 44.967588 l 0.149892,-39.64012 z" />
+                <path id="room-111" class="room green" d="M 44.018272,346.72738 43.86838,386.3675 H 1.1491717 l 0.099928,-39.64012 z" />
+                <path id="room-112" class="room green" d="m 73.546989,280.92251 h 53.661321 l 0.05,39.69639 H 73.596953 Z" />
+                <path id="room-113" class="room green" d="m 128.25755,280.92251 h 65.65268 l 0.05,39.69639 h -65.70265 z" />
+                <path id="room-114" class="room green" d="m 484.67565,345.77577 v 40.22101 l 52.98681,0.05 0.0999,-40.29595 z" />
+                <path id="room-115" class="room green" d="m 554.75015,345.75083 0.0125,40.29595 37.37306,-0.34978 0.0375,-39.93372 z" />
+                <path id="room-116" class="room green" d="m 592.87061,385.64324 -0.0542,-39.89241 38.93468,0.005 -0.0353,39.94042 z" />
+                <path id="room-117" class="room green" d="m 632.5066,345.75083 -0.0125,39.94542 55.27266,-0.0367 0.0375,-39.89624 z" />
+                <path id="room-118" class="room green" d="m 705.45402,345.75083 0.025,39.94542 55.57245,-0.0117 -0.0375,-39.90874 z" />
+                <path id="room-119" class="room green" d="m 761.03896,280.73118 -0.025,40.01263 -54.48573,0.0375 -0.025,-40.05011 z" />
+                <path id="room-122" class="room green" d="m 653.25415,280.73117 -0.0375,40.15241 -61.33079,0.0726 0.025,-40.22498 z" />
+                <path id="room-130" class="room green" d="m 646.25919,35.047235 v 40.298457 l -74.87104,-0.09993 0.1499,-40.121081 z" />
+                <path id="room-136" class="room green" d="m 583.23439,101.37693 v 40.69573 l 100.45167,-0.0554 -0.0177,-40.67352 z" />
+            </svg>
+        </div>
+
+        <!-- Floor with room 202 -->
+        <div class="floor">
+            <img src="img/kt2.png" class="background-image" alt="Floor with room 202">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 765 402" style="position:absolute; top:0; left:0; width:100%; height:100%;">
+                <path id="room-201" class="room green" d="m 355.34325,313.28125 -0.0221,29.02472 1.67938,3.8449 0.97227,2.18761 1.37002,1.96664 1.78986,2.34229 1.03856,1.23744 1.5468,1.25953 2.09922,1.5026 3.55763,2.05503 3.13779,1.23744 2.98311,0.86178 3.44714,0.48614 5.14862,0.0663 4.33103,-0.7292 4.83927,-1.76777 2.12132,-1.01647 2.91681,-1.87825 1.70148,-1.5247 1.70147,-1.70147 1.81196,-1.83406 1.10486,-1.83406 1.54679,-2.82843 0.7734,-2.71794 0.41985,-1.30373 29.21235,-0.0884 v -28.96928 z" />
+                <path id="room-202" class="room green" d="M 325.78125,313.28125 325.71875,341.75 H 354.625 l -0.0312,-28.40625 z" />
+                <path id="room-203" class="room green" d="m 277.32596,348.76635 -0.0441,39.45521 -55.87425,0.0674 0.0674,-39.66562 z" />
+                <path id="room-204" class="room green" d="m 220.71934,348.62334 -0.0417,39.66562 -54.04904,-0.0674 0.1214,-39.59822 z" />
+                <path id="room-205" class="room green" d="m 166.01562,348.62334 0.0781,39.66562 -54.54688,-0.0858 0.0781,-39.57978 z" />
+                <path id="room-206" class="room green" d="m 111.00472,348.62334 0.011,39.66562 -54.351698,0.0157 0.02344,-39.68135 z" />
+                <path id="room-207" class="room green" d="M 56.1875,348.62331 56.1797,388.30466 1.4584077,388.25687 1.625,348.62331 Z" />
+                <path id="room-208" class="room green" d="m 1.4584077,322.26391 55.2056143,-0.0884 -0.0071,-40.74703 -55.1764262,0.24307 z" />
+                <path id="room-209" class="room green" d="m 133.25,281.42848 h 63.9444 l 0.0884,40.83543 h -64.10917 z" />
+                <path id="room-209a" class="room green" d="m 76.3125,281.42848 v 40.83543 h 56.375 l 0.0625,-40.83543 z" />
+                <path id="room-213" class="room green" d="m 277.36263,261.77344 0.0124,-33.19532 50.125,-0.17187 -5e-5,33.4375 z" />
+                <path id="room-214" class="room green" d="m 327.50003,227.9425 -50.1374,0.0106 v -33.63134 -0.25928 l 50.1374,0.0625 z" />
+                <path id="room-220" class="room green" d="m 727.13779,99.392697 36.53753,-0.03315 V 34.095801 l -36.80032,0.0292 -0.28125,40.40625 h 0.5 z" />
+                <path id="room-221" class="room green" d="m 711.64062,99.834638 0.007,40.462262 H 745 l -0.0312,-40.462262 z" />
+                <path id="room-222" class="room green" d="m 655.15625,99.834638 0.0469,40.462262 35.64063,-0.0625 0.0625,-40.399732 z" />
+                <path id="room-223" class="room green" d="m 592.51562,99.834638 -0.0156,19.009112 -6.17188,0.0469 v 21.40625 l 68.32813,-0.0156 V 99.9688 l -62.10156,-0.134112 z" />
+                <path id="room-228" class="room green" d="m 485.4288,161.5739 -50.11619,-0.0884 v 34.1179 l 50.11619,0.17678 z" />
+                <path id="room-229" class="room green" d="m 435.31261,196.17187 50.11619,0.1276 -0.011,32.68159 -50.06095,-0.19887 z" />
+                <path id="room-230" class="room green" d="m 435.31261,229.39844 50.11619,0.0703 -0.0663,50.97643 -49.97256,-0.0331 z" />
+                <path id="room-232" class="room green" d="m 671.8125,280.9375 0.0156,40.14062 h -59.78125 l -0.0156,-40.1875 z" />
+                <path id="room-233" class="room green" d="M 672.3125,280.9375 H 689.125 V 321 l -16.75,-0.125 z" />
+                <path id="room-234" class="room green" d="m 708.875,280.875 54.8125,0.1875 v 39.875 l -54.875,-0.0625 z" />
+                <path id="room-235" class="room green" d="m 707.96857,347.786 -0.0331,40.19835 55.72083,-0.0625 0.0312,-40.13587 z" />
+                <path id="room-236" class="room green" d="m 634.98437,347.78602 -0.0469,40.1827 52.9375,3e-5 0.0625,-40.18273 z" />
+                <path id="room-237" class="room green" d="m 595.33971,387.89226 -0.0663,-40.08414 39.17814,-0.0221 -0.13906,40.1827 z" />
+                <path id="room-238" class="room green" d="m 557.23437,347.85232 v 40.1946 l 37.26563,-0.0782 3e-5,-40.1606 z" />
+                <path id="room-239" class="room green" d="m 487.20312,347.90625 0.0312,12.75 H 486.75 l 0.0156,27.29687 51.05538,0.0938 -0.0884,-40.1946 z" />
+            </svg>
+        </div>
+
+        <!-- Floor with room 303 -->
+        <div class="floor">
+            <img src="img/kt3.png" class="background-image" alt="Floor with room 303">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 768 278" style="position:absolute; top:0; left:0; width:100%; height:100%;">
+                <path id="room-302" class="room green" d="m 332.21875,181.71875 -0.0781,31.85937 35.35603,0.2112 2.2539,7.11526 4.2182,4.68917 4.4375,3.84375 5.84375,2.3125 2.5816,0.75555 6.62913,-0.0442 3.53553,-1.06066 4.72878,-2.29809 4.06586,-3.31457 3.0936,-4.46361 3.13778,-6.98268 0.0884,-0.83969 1.01647,-0.0442 -0.0884,-31.77561 z" />
+                <path id="room-303" class="room green" d="m 279.85678,220.54456 -26.47931,0.0212 -2.6e-4,40.06243 26.76236,0.009 0.0719,-22.59325 -0.25157,-0.25272 z" />
+                <path id="room-303" class="room green" d="m 279.85678,220.54456 -26.47931,0.0212 -2.6e-4,40.06243 26.76236,0.009 0.0719,-22.59325 -0.25157,-0.25272 z" />
+                <path id="room-304" class="room green" d="m 252.70662,220.54456 v 40.09263 l -26.66627,-0.084 -0.012,-40.0086 z" />
+                <path id="room-305" class="room green" d="m 225.42187,220.54456 -0.0312,40.09263 -54.9375,-0.0278 0.0469,-40.07812 z" />
+                <path id="room-306" class="room green" d="m 169.78125,220.53127 0.008,40.10592 -54.75163,-0.11254 0.21257,-39.99338 z" />
+                <path id="room-307" class="room green" d="m 114.41406,220.53127 0.0156,39.96873 -54.104643,0.11304 v -40.06202 z" />
+                <path id="room-308" class="room green" d="m 59.984375,220.53127 -0.0078,40.08177 -27.239728,-0.0331 -0.04933,-40.2049 z" />
+                <path id="room-309" class="room green" d="M 32.195312,220.45312 32.1875,260.61304 4.6293397,260.60199 4.6875,220.34375 Z" />
+                <path id="room-310" class="room green" d="m 4.6182912,155.35357 0.066291,40.42662 54.5135138,0.11049 0.0221,-40.50397 z" />
+                <path id="room-311" class="room green" d="m 80.654367,155.35357 0.0019,40.53711 39.817073,-0.0663 v -40.43767 z" />
+                <path id="room-312" class="room green" d="m 121.10156,155.35357 -0.0151,40.53711 42.60099,-0.0938 -0.125,-40.4433 z" />
+                <path id="room-313" class="room green" d="m 164.26974,155.35357 0.0884,40.38795 37.71999,-0.0618 0.066,-40.32612 z" />
+                <path id="room-315" class="room green" d="m 279.8817,105.31472 h 50.93379 l 0.0221,49.76264 -50.93133,0.032 z" />
+                <path id="room-316" class="room green" d="m 279.8817,104.79543 50.95589,-0.011 -0.0442,-34.338877 -50.94483,0.03315 z" />
+                <path id="room-320" class="room green" d="M 436.19649,31.84375 486.93141,31.864 V 50 l -50.73492,-0.03125 z" />
+                <path id="room-321" class="room green" d="m 436.19649,50.6875 50.73492,0.02531 -0.0773,50.43661 -50.56919,-0.0332 z" />
+                <path id="room-322" class="room green" d="m 436.19649,101.88967 50.73492,0.0221 -0.11891,52.55699 -50.53125,0.0469 z" />
+                <path id="room-324" class="room green" d="m 636.37401,154.90622 v 39.73437 l -39.24443,-0.0536 v -39.68637 z" />
+                <path id="room-325" class="room green" d="m 637.10321,154.97792 0.0296,39.57677 56.82031,0.0859 -0.0156,-39.73437 z" />
+                <path id="room-326" class="room green" d="m 766.23437,154.82812 -0.04,39.60415 -54.81939,-0.0573 0.0312,-39.40625 z" />
+                <path id="room-327" class="room green" d="m 710.50973,220.52893 -0.0221,40.06202 55.72886,-0.0663 -0.0221,-40.01782 z" />
+                <path id="room-328" class="room green" d="m 655.48437,220.52893 v 40.06202 L 709.875,260.5 v -39.875 z" />
+            </svg>
+        </div>
+
+        <!-- Table -->
+        <div class="table-container">
+            <div class="table-section">
+                <table>
+                    <thead>
+                        <tr>
+                            <th colspan="3">Этаж 1</th>
+                        </tr>
+                        <tr>
+                            <th>Кабинет</th>
+                            <th>Темп. (°C)</th>
+                            <th>Влажн. (%)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="data-table-floor-1">
+                        <!-- 1 этаж -->
+                        <tr>
+                            <td>106</td>
+                            <td id="temp-106">--</td>
+                            <td id="hum-106">--</td>
+                        </tr>
+                        <tr>
+                            <td>107</td>
+                            <td id="temp-107">--</td>
+                            <td id="hum-107">--</td>
+                        </tr>
+                        <tr>
+                            <td>108</td>
+                            <td id="temp-108">--</td>
+                            <td id="hum-108">--</td>
+                        </tr>
+                        <tr>
+                            <td>109</td>
+                            <td id="temp-109">--</td>
+                            <td id="hum-109">--</td>
+                        </tr>
+                        <tr>
+                            <td>110</td>
+                            <td id="temp-110">--</td>
+                            <td id="hum-110">--</td>
+                        </tr>
+                        <tr>
+                            <td>111</td>
+                            <td id="temp-111">--</td>
+                            <td id="hum-111">--</td>
+                        </tr>
+                        <tr>
+                            <td>112</td>
+                            <td id="temp-112">--</td>
+                            <td id="hum-112">--</td>
+                        </tr>
+                        <tr>
+                            <td>113</td>
+                            <td id="temp-113">--</td>
+                            <td id="hum-113">--</td>
+                        </tr>
+                        <tr>
+                            <td>114</td>
+                            <td id="temp-114">--</td>
+                            <td id="hum-114">--</td>
+                        </tr>
+                        <tr>
+                            <td>115</td>
+                            <td id="temp-115">--</td>
+                            <td id="hum-115">--</td>
+                        </tr>
+                        <tr>
+                            <td>116</td>
+                            <td id="temp-116">--</td>
+                            <td id="hum-116">--</td>
+                        </tr>
+                        <tr>
+                            <td>117</td>
+                            <td id="temp-117">--</td>
+                            <td id="hum-117">--</td>
+                        </tr>
+                        <tr>
+                            <td>118</td>
+                            <td id="temp-118">--</td>
+                            <td id="hum-118">--</td>
+                        </tr>
+                        <tr>
+                            <td>119</td>
+                            <td id="temp-119">--</td>
+                            <td id="hum-119">--</td>
+                        </tr>
+                        <tr>
+                            <td>122</td>
+                            <td id="temp-122">--</td>
+                            <td id="hum-122">--</td>
+                        </tr>
+                        <tr>
+                            <td>130</td>
+                            <td id="temp-130">--</td>
+                            <td id="hum-130">--</td>
+                        </tr>
+                        <tr>
+                            <td>136</td>
+                            <td id="temp-136">--</td>
+                            <td id="hum-136">--</td>
+                        </tr>
+                        <!-- Добавьте остальные строки для этажа 1 здесь -->
+                    </tbody>
+                </table>
+                <table>
+                    <thead>
+                        <tr>
+                            <th colspan="3">Этаж 2</th>
+                        </tr>
+                        <tr>
+                            <th>Кабинет</th>
+                            <th>Темп. (°C)</th>
+                            <th>Влажн. (%)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="data-table-floor-2">
+                        <!-- 2 этаж -->
+                        <tr>
+                            <td>201</td>
+                            <td id="temp-201">--</td>
+                            <td id="hum-201">--</td>
+                        </tr>
+                        <tr>
+                            <td>202</td>
+                            <td id="temp-202">--</td>
+                            <td id="hum-202">--</td>
+                        </tr>
+                        <tr>
+                            <td>203</td>
+                            <td id="temp-203">--</td>
+                            <td id="hum-203">--</td>
+                        </tr>
+                        <tr>
+                            <td>204</td>
+                            <td id="temp-204">--</td>
+                            <td id="hum-204">--</td>
+                        </tr>
+                        <tr>
+                            <td>205</td>
+                            <td id="temp-205">--</td>
+                            <td id="hum-205">--</td>
+                        </tr>
+                        <tr>
+                            <td>206</td>
+                            <td id="temp-206">--</td>
+                            <td id="hum-206">--</td>
+                        </tr>
+                        <tr>
+                            <td>207</td>
+                            <td id="temp-207">--</td>
+                            <td id="hum-207">--</td>
+                        </tr>
+                        <tr>
+                            <td>208</td>
+                            <td id="temp-208">--</td>
+                            <td id="hum-208">--</td>
+                        </tr>
+                        <tr>
+                            <td>209</td>
+                            <td id="temp-209">--</td>
+                            <td id="hum-209">--</td>
+                        </tr>
+                        <tr>
+                            <td>209a</td>
+                            <td id="temp-209a">--</td>
+                            <td id="hum-209a">--</td>
+                        </tr>
+                        <tr>
+                            <td>213</td>
+                            <td id="temp-213">--</td>
+                            <td id="hum-213">--</td>
+                        </tr>
+                        <tr>
+                            <td>214</td>
+                            <td id="temp-214">--</td>
+                            <td id="hum-214">--</td>
+                        </tr>
+                        <tr>
+                            <td>220</td>
+                            <td id="temp-220">--</td>
+                            <td id="hum-220">--</td>
+                        </tr>
+                        <tr>
+                            <td>221</td>
+                            <td id="temp-221">--</td>
+                            <td id="hum-221">--</td>
+                        </tr>
+                        <tr>
+                            <td>222</td>
+                            <td id="temp-222">--</td>
+                            <td id="hum-222">--</td>
+                        </tr>
+                        <tr>
+                            <td>223</td>
+                            <td id="temp-223">--</td>
+                            <td id="hum-223">--</td>
+                        </tr>
+                        <tr>
+                            <td>228</td>
+                            <td id="temp-228">--</td>
+                            <td id="hum-228">--</td>
+                        </tr>
+                        <tr>
+                            <td>229</td>
+                            <td id="temp-229">--</td>
+                            <td id="hum-229">--</td>
+                        </tr>
+                        <tr>
+                            <td>230</td>
+                            <td id="temp-230">--</td>
+                            <td id="hum-230">--</td>
+                        </tr>
+                        <tr>
+                            <td>232</td>
+                            <td id="temp-232">--</td>
+                            <td id="hum-232">--</td>
+                        </tr>
+                        <tr>
+                            <td>234</td>
+                            <td id="temp-234">--</td>
+                            <td id="hum-234">--</td>
+                        </tr>
+                        <tr>
+                            <td>235</td>
+                            <td id="temp-235">--</td>
+                            <td id="hum-235">--</td>
+                        </tr>
+                        <tr>
+                            <td>236</td>
+                            <td id="temp-236">--</td>
+                            <td id="hum-236">--</td>
+                        </tr>
+                        <tr>
+                            <td>237</td>
+                            <td id="temp-237">--</td>
+                            <td id="hum-237">--</td>
+                        </tr>
+                        <tr>
+                            <td>238</td>
+                            <td id="temp-238">--</td>
+                            <td id="hum-238">--</td>
+                        </tr>
+                        <tr>
+                            <td>239</td>
+                            <td id="temp-239">--</td>
+                            <td id="hum-239">--</td>
+                        </tr>
+                        <!-- Добавьте остальные строки для этажа 2 здесь -->
+                    </tbody>
+                </table>
+                <table>
+                    <thead>
+                        <tr>
+                            <th colspan="3">Этаж 3</th>
+                        </tr>
+                        <tr>
+                            <th>Кабинет</th>
+                            <th>Темп. (°C)</th>
+                            <th>Влажн. (%)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="data-table-floor-3">
+                        <!-- 3 этаж -->
+                        <tr>
+                            <td>302</td>
+                            <td id="temp-302">--</td>
+                            <td id="hum-302">--</td>
+                        </tr>
+                        <tr>
+                            <td>303</td>
+                            <td id="temp-303">--</td>
+                            <td id="hum-303">--</td>
+                        </tr>
+                        <tr>
+                            <td>303</td>
+                            <td id="temp-303">--</td>
+                            <td id="hum-303">--</td>
+                        </tr>
+                        <tr>
+                            <td>304</td>
+                            <td id="temp-304">--</td>
+                            <td id="hum-304">--</td>
+                        </tr>
+                        <tr>
+                            <td>305</td>
+                            <td id="temp-305">--</td>
+                            <td id="hum-305">--</td>
+                        </tr>
+                        <tr>
+                            <td>306</td>
+                            <td id="temp-306">--</td>
+                            <td id="hum-306">--</td>
+                        </tr>
+                        <tr>
+                            <td>307</td>
+                            <td id="temp-307">--</td>
+                            <td id="hum-307">--</td>
+                        </tr>
+                        <tr>
+                            <td>308</td>
+                            <td id="temp-308">--</td>
+                            <td id="hum-308">--</td>
+                        </tr>
+                        <tr>
+                            <td>309</td>
+                            <td id="temp-309">--</td>
+                            <td id="hum-309">--</td>
+                        </tr>
+                        <tr>
+                            <td>310</td>
+                            <td id="temp-310">--</td>
+                            <td id="hum-310">--</td>
+                        </tr>
+                        <tr>
+                            <td>311</td>
+                            <td id="temp-311">--</td>
+                            <td id="hum-311">--</td>
+                        </tr>
+                        <tr>
+                            <td>312</td>
+                            <td id="temp-312">--</td>
+                            <td id="hum-312">--</td>
+                        </tr>
+                        <tr>
+                            <td>313</td>
+                            <td id="temp-313">--</td>
+                            <td id="hum-313">--</td>
+                        </tr>
+                        <tr>
+                            <td>315</td>
+                            <td id="temp-315">--</td>
+                            <td id="hum-315">--</td>
+                        </tr>
+                        <tr>
+                            <td>316</td>
+                            <td id="temp-316">--</td>
+                            <td id="hum-316">--</td>
+                        </tr>
+                        <tr>
+                            <td>320</td>
+                            <td id="temp-303">--</td>
+                            <td id="hum-303">--</td>
+                        </tr>
+                        <tr>
+                            <td>321</td>
+                            <td id="temp-321">--</td>
+                            <td id="hum-321">--</td>
+                        </tr>
+                        <tr>
+                            <td>322</td>
+                            <td id="temp-322">--</td>
+                            <td id="hum-322">--</td>
+                        </tr>
+                        <tr>
+                            <td>324</td>
+                            <td id="temp-324">--</td>
+                            <td id="hum-324">--</td>
+                        </tr>
+                        <tr>
+                            <td>325</td>
+                            <td id="temp-325">--</td>
+                            <td id="hum-325">--</td>
+                        </tr>
+                        <tr>
+                            <td>326</td>
+                            <td id="temp-326">--</td>
+                            <td id="hum-326">--</td>
+                        </tr>
+                        <tr>
+                            <td>327</td>
+                            <td id="temp-327">--</td>
+                            <td id="hum-327">--</td>
+                        </tr>
+                        <tr>
+                            <td>328</td>
+                            <td id="temp-328">--</td>
+                            <td id="hum-328">--</td>
+                        </tr>
+                        <!-- Добавьте остальные строки для этажа 3 здесь -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function connectWebSocket() {
+            let socket = new WebSocket("ws://127.0.0.1:8000/ws/data");
+
+            socket.onopen = function() {
+                console.log("Соединение установлено.");
+            };
+
+            socket.onmessage = function(event) {
+                let data = JSON.parse(event.data);
+                console.log("Данные получены", data);
+                updateData(data); // Обновляем данные на странице
+            };
+
+            socket.onerror = function(error) {
+                console.error("Ошибка WebSocket:", error);
+            };
+
+            socket.onclose = function(event) {
+                console.log(`Соединение закрыто: код=${event.code}, причина=${event.reason}`);
+                // Автоматическое повторное подключение после разрыва
+                setTimeout(connectWebSocket, 1000);
+            };
+        }
+
+        connectWebSocket();
+
+        function updateData(data) {
+            // Преобразуем идентификаторы, если необходимо
+            const idMapping = {
+                '1': '106',
+                '2': '107',
+                '3': '108',
+                '4': '109',
+                '5': '110',
+                '6': '111',
+                '7': '112',
+                '8': '113',
+                '9': '114',
+                '10': '115',
+                '11': '116',
+                '12': '117',
+                '13': '118',
+                '14': '119',
+                '15': '122',
+                '16': '130',
+                '17': '136',
+                '18': '201',
+                '19': '202',
+                '20': '203',
+                '21': '204',
+                '22': '205',
+                '23': '206',
+                '24': '207',
+                '25': '208',
+                '26': '209',
+                '27': '209a',
+                '28': '213',
+                '29': '214',
+                '30': '220',
+                '31': '221',
+                '32': '222',
+                '33': '223',
+                '34': '228',
+                '35': '229',
+                '36': '230',
+                '37': '232',
+                '38': '234',
+                '39': '235',
+                '40': '236',
+                '41': '237',
+                '42': '238',
+                '43': '239',
+                '44': '302',
+                '45': '303',
+                '46': '304',
+                '47': '305',
+                '48': '306',
+                '49': '307',
+                '50': '308',
+                '51': '309',
+                '52': '310',
+                '53': '311',
+                '54': '312',
+                '55': '313',
+                '56': '315',
+                '57': '316',
+                '58': '320',
+                '59': '321',
+                '60': '322',
+                '61': '323',
+                '62': '324',
+                '63': '325',
+                '64': '326',
+                '65': '327',
+                '66': '328',
+            };
+
+            Object.keys(data).forEach(roomId => {
+                let mappedRoomId = idMapping[roomId];
+                if (!mappedRoomId) return;
+
+                let values = data[roomId];
+                let roomNumber = mappedRoomId;
+
+                // Обновление таблицы
+                let tempCell = document.getElementById(`temp-${roomNumber}`);
+                let humCell = document.getElementById(`hum-${roomNumber}`);
+                let rowElement = tempCell ? tempCell.closest('tr') : null;
+
+                if (tempCell && humCell) {
+                    if (values && values.temperature != null && values.humidity != null) {
+                        tempCell.textContent = values.temperature.toFixed(1);
+                        humCell.textContent = values.humidity.toFixed(1);
+                    } else {
+                        // Если данных нет, оставляем ячейки пустыми
+                        tempCell.textContent = "";
+                        humCell.textContent = "";
+                    }
+                }
+
+                // Обновление цвета комнат в SVG
+                let roomElement = document.getElementById(`room-${roomNumber}`);
+                if (roomElement) {
+                    if (values && values.temperature != null && values.humidity != null) {
+                        if (values.temperature > 27 || values.humidity > 60) {
+                            roomElement.classList.remove('green', 'white');
+                            roomElement.classList.add('red');
+                            if (rowElement) {
+                                rowElement.classList.add('red-row');
+                                rowElement.classList.remove('green-row', 'white-row');
+                            }
+                        } else {
+                            roomElement.classList.remove('red', 'white');
+                            roomElement.classList.add('green');
+                            if (rowElement) {
+                                rowElement.classList.add('green-row');
+                                rowElement.classList.remove('red-row', 'white-row');
+                            }
+                        }
+                    } else {
+                        // Если данных нет, устанавливаем белый цвет
+                        roomElement.classList.remove('green', 'red');
+                        roomElement.classList.add('white');
+                        if (rowElement) {
+                            rowElement.classList.add('white-row');
+                            rowElement.classList.remove('green-row', 'red-row');
+                        }
+                    }
+                }
+        });
+
+        }
+    </script>
+
+</body>
+</html>
